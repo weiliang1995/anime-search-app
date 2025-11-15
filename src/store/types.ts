@@ -22,12 +22,10 @@ export interface Anime {
   url: string;
   images: Images;
   title: string;
-  type: 'TV' | 'Movie' | 'OVA' | 'Special' | 'ONA' | 'Music';
   episodes: number | null;
   status: string;
   score: number | null;
   rank: number | null;
-  rating: string | null;
   synopsis: string;
   season: string | null;
   year: number | null;

@@ -103,7 +103,7 @@
   }
 
   .movie-card {
-    @apply bg-dark-100 p-5 rounded-2xl shadow-inner shadow-light-100/10;
+    @apply bg-dark-100 p-5 rounded-2xl shadow-inner shadow-light-100/10 flex flex-col justify-between;
 
     & img {
       @apply rounded-lg h-auto w-full;
@@ -114,7 +114,7 @@
     }
 
     & .content {
-      @apply mt-2 flex flex-row items-center flex-wrap gap-2;
+      @apply mt-2 flex flex-row items-center justify-between;
     }
 
     & .rating {

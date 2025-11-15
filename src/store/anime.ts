@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { AnimeState, AnimeSearchResponse } from "./types";
 
-const API_BASE_URL = "";
+const API_BASE_URL = "https://api.jikan.moe/v4";
 
 const initialState: AnimeState = {
   searchTerm: '',
@@ -12,14 +12,15 @@ const initialState: AnimeState = {
 }
 
 export const fetchAnimeBySearch = createAsyncThunk<
-  AnimeSearchResponse,
+  { query: string,  response: AnimeSearchResponse },
   { query: string; page: number },
-  { rejectValue: string }
+  { rejectValue: string, signal: AbortSignal }
 >(
   'anime/fetchBySearch',
   async ({ query, page }, { signal, rejectWithValue }) => {
     try {
-      const url = `${API_BASE_URL}/anime?q=${encodeURIComponent(query)}&page=${page}&limit=20&sfw`;
+      const baseUrl = `${API_BASE_URL}/anime`;
+      const url = query ? `${baseUrl}?q=${encodeURIComponent(query)}&page=${page}&limit=20&order_by=score&sort=desc` : `${API_BASE_URL}/top/anime`;
       const response = await fetch(url, { signal });
       
       if (!response.ok) {
@@ -27,7 +28,7 @@ export const fetchAnimeBySearch = createAsyncThunk<
       }
 
       const data: AnimeSearchResponse = await response.json();
-      return data;
+      return { query, response: data };
       
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') {
@@ -53,9 +54,10 @@ const animeSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchAnimeBySearch.fulfilled, (state, action) => {
+        if (action.payload.query.trim() !== state.searchTerm.trim()) return;
         state.loading = 'succeeded';
-        state.results = action.payload.data;
-        state.pagination = action.payload.pagination;
+        state.results = action.payload.response.data;
+        state.pagination = action.payload.response.pagination;
       })
       .addCase(fetchAnimeBySearch.rejected, (state, action) => {
         if (action.meta.aborted) {

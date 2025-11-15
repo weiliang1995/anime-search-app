@@ -1,42 +1,38 @@
-const Card = () =>
-  // {
-  // movie: {
-  //   title,
-  //   id,
-  //   vote_average,
-  //   poster_path,
-  //   release_date,
-  //   original_language,
-  // },
-  // }
-  {
-    return (
-      <div>Card</div>
-      // <div key={id} className="movie-card">
-      //   <img
-      //     src={
-      //       poster_path
-      //         ? `https://image.tmdb.org/t/p/w500/${poster_path}`
-      //         : "/no-movie.png"
-      //     }
-      //   />
-      //   <div className="mt-4">
-      //     <h3>{title}</h3>
-      //     <div className="content">
-      //       <div className="rating">
-      //         <img src="star.svg" alt="star icon" />
-      //         <p>{vote_average ? vote_average.toFixed(1) : "N/A"}</p>
-      //       </div>
-      //       <span>•</span>
-      //       <p className="lang">{original_language}</p>
-      //       <span>•</span>
-      //       <p className="year">
-      //         {release_date ? release_date.split("-")[0] : "N/A"}
-      //       </p>
-      //     </div>
-      //   </div>
-      // </div>
-    );
+import star from "@/assets/star.svg";
+import { formatFirstLetter } from "@/utils/format";
+import { Link } from "react-router-dom";
+type Props = {
+  anime: {
+    title: string;
+    image: string;
+    id: number;
+    score: number | null;
+    rank: number | null;
+    year: number | null;
+    season: string | null;
   };
+};
+
+const Card = ({ anime }: Props) => {
+  const { title, image, id, score, year, season } = anime;
+
+  return (
+    <Link key={id} className="movie-card" to={`/anime/${id}`}>
+      <img src={image ? image : "/no-movie.png"} />
+      <div className="mt-4">
+        <h3>{title}</h3>
+        <div className="content">
+          <div className="rating">
+            <img src={star} alt="star icon" />
+            <p>{score ? score.toFixed(2) : "N/A"}</p>
+          </div>
+          <p className="year">
+            {season ? formatFirstLetter(season) : ""} {year ?? ""}
+          </p>
+        </div>
+      </div>
+    </Link>
+  );
+};
 
 export default Card;
