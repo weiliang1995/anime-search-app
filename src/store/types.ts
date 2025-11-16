@@ -25,11 +25,17 @@ export interface Anime {
   episodes: number | null;
   status: string;
   score: number | null;
+  scored_by: number | null;
   rank: number | null;
   synopsis: string;
   season: string | null;
   year: number | null;
   genres: MalUrl[];
+  trailer: {
+    embed_url: string | null;
+    url: string | null;
+  };
+  
 }
 
 export interface JikanPagination {

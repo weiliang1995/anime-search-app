@@ -20,7 +20,7 @@ export const fetchAnimeBySearch = createAsyncThunk<
   async ({ query, page }, { signal, rejectWithValue }) => {
     try {
       const baseUrl = `${API_BASE_URL}/anime`;
-      const url = query ? `${baseUrl}?q=${encodeURIComponent(query)}&page=${page}&limit=20&order_by=score&sort=desc` : `${API_BASE_URL}/top/anime`;
+      const url = query ? `${baseUrl}?q=${encodeURIComponent(query)}&page=${page}&limit=12&order_by=score&sort=desc` : `${API_BASE_URL}/top/anime?limit=12&page=${page}`;
       const response = await fetch(url, { signal });
       
       if (!response.ok) {

@@ -7,7 +7,8 @@ import SearchInput from "@/components/SearchInput";
 import Card from "@/components/Card";
 import Spinner from "@/components/Spinner";
 import header from "@/assets/header.webp";
-// import Pagination from "@/components/Pagination";
+import Pagination from "@/components/Pagination";
+
 let controller: AbortController | null = null;
 
 const Search: React.FC = () => {
@@ -46,10 +47,10 @@ const Search: React.FC = () => {
 
   useEffect(() => {
     dispatch(setSearchTerm(debouncedSearchInput.trim()));
-    if (debouncedSearchInput.trim() || !isSearching) {
+    if (debouncedSearchInput.trim().length > 0) {
       fetchAnime(1);
     }
-  }, [debouncedSearchInput, dispatch, fetchAnime, isSearching]);
+  }, [debouncedSearchInput, dispatch, fetchAnime]);
 
   const handlePageChange = useCallback(
     (newPage: number) => {
@@ -130,14 +131,14 @@ const Search: React.FC = () => {
                 ))}
               </ul>
 
-              {/* {pagination && pagination.last_visible_page > 1 && (
+              {pagination && (
                 <Pagination
                   currentPage={pagination.current_page}
-                  lastPage={pagination.last_visible_page}
+                  hasNextPage={pagination.has_next_page}
                   onPageChange={handlePageChange}
                   isLoading={isLoading}
                 />
-              )} */}
+              )}
             </>
           )}
         </section>
